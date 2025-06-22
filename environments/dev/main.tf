@@ -43,3 +43,24 @@ module "eks" {
   eks_cluster_role_arn    = module.iam.eks_cluster_role_arn
   eks_node_group_role_arn = module.iam.eks_node_role_arn
 }
+
+module "ci_iam" {
+  source = "../../modules/ci-iam"
+
+  env  = "dev"
+  repo = "https://github.com/RESTfulAyush/task-flow.git" # 🔁 replace this with your actual repo
+}
+
+module "ecr" {
+  source = "../../modules/ecr"
+  env    = "dev"
+}
+
+module "argocd" {
+  source = "../../modules/argocd"
+}
+
+module "argocd" {
+  source = "../../modules/argocd"
+}
+
