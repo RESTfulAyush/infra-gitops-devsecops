@@ -75,6 +75,9 @@ module "ecr" {
 # ─────────────────────────────────────────────
 module "argocd" {
   source = "../../modules/argocd"
+  providers = {
+    kubernetes = kubernetes
+  }
 }
 
 # ─────────────────────────────────────────────

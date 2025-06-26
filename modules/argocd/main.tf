@@ -1,17 +1,3 @@
-
-# resource "helm_release" "argocd" {
-#   name             = "argocd"
-#   repository       = "https://argoproj.github.io/argo-helm"
-#   chart            = "argo-cd"
-#   namespace        = "argocd"
-#   create_namespace = true
-#   version          = "5.46.6" # latest stable as of mid-2025
-
-#   values = [
-#     file("${path.module}/values.yaml")
-#   ]
-# }
-
 resource "helm_release" "argocd" {
   name             = "argocd"
   namespace        = "argocd"
@@ -30,4 +16,33 @@ resource "helm_release" "argocd" {
         enabled: false
   EOT
   ]
+}
+
+resource "kubernetes_manifest" "argocd_app" {
+  manifest = {
+    apiVersion = "argoproj.io/v1alpha1"
+    kind       = "Application"
+    metadata = {
+      name      = "taskflow"
+      namespace = "argocd"
+    }
+    spec = {
+      project = "default"
+      source = {
+        repoURL        = "https://github.com/RESTfulAyush/gitops-environments"
+        targetRevision = "main"
+        path           = "dev/taskflow"
+      }
+      destination = {
+        server    = "https://kubernetes.default.svc"
+        namespace = "default"
+      }
+      syncPolicy = {
+        automated = {
+          prune    = true
+          selfHeal = true
+        }
+      }
+    }
+  }
 }
