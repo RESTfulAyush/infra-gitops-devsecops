@@ -59,7 +59,7 @@ module "ci_iam" {
   source = "../../modules/ci-iam"
 
   env  = "dev"
-  repo = "https://github.com/RESTfulAyush/task-flow.git"
+  repo = "https://github.com/RESTfulAyush/flipCoin.git"
 }
 
 # ─────────────────────────────────────────────
